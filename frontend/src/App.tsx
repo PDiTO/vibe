@@ -1,7 +1,46 @@
-import React from "react";
+// Styling
+import { ThemeProvider } from "@mui/material";
+import theme from "./assets/theme/muiTheme";
+
+// Web3
+import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { polygon, polygonMumbai, hardhat } from "wagmi/chains";
+import { publicProvider } from "wagmi/providers/public";
+import { InjectedConnector } from "wagmi/connectors/injected";
+
+// Views
+import { Header } from "./views/header/Header";
+import { Status } from "./views/status/Status";
+
+const { chains, provider, webSocketProvider } = configureChains(
+  [polygon, polygonMumbai, hardhat],
+  [publicProvider()]
+);
+
+const client = createClient({
+  autoConnect: true,
+  connectors: [
+    new InjectedConnector({
+      chains,
+      options: {
+        name: "Injected",
+        shimDisconnect: true,
+      },
+    }),
+  ],
+  provider,
+  webSocketProvider,
+});
 
 function App() {
-  return <div className="App">Vibes</div>;
+  return (
+    <ThemeProvider theme={theme}>
+      <WagmiConfig client={client}>
+        <Header />
+        <Status />
+      </WagmiConfig>
+    </ThemeProvider>
+  );
 }
 
 export default App;
