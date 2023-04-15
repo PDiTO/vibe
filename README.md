@@ -22,3 +22,9 @@ Please reach out on Twitter for more information:
 ### Tech Stack
 
 This project was bootstrapped with Hardhat for the smart contracts and React for the frontend.
+
+### Polygon Mumbai Testnet Deployment
+https://mumbai.polygonscan.com/address/0xa22d51c47bcc8a58fba141672ee05e0764c8e64e
+https://mumbai.polygonscan.com/address/0x55d0A0187C0aAb8C6d079AEce260a3d3cA39F4a9
+https://mumbai.polygonscan.com/address/0x0fb126e2d802b2734367048ee28867eb7e47a4fa
+https://twitter.com/pdito/status/1647373136143462402?s=61&t=DN9mwQIJ5ysuGC7oG7ozKw
