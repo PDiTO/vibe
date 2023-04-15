@@ -5,7 +5,7 @@ import { Button, Stack, Typography } from "@mui/material";
 import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 
 // Views
-import { Web3Integration } from "../web3/Web3Integration";
+import { Web3MyVibes } from "../web3/WebMyVibes";
 
 // Handles which view to show based on wallet status
 export const Status = () => {
@@ -42,7 +42,7 @@ export const Status = () => {
 
   // Connected, correct network
   if (isConnected) {
-    return <Web3Integration />;
+    return <Web3MyVibes />;
   }
 
   // Not connected

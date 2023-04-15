@@ -11,7 +11,7 @@ export const theme = createTheme({
     //       main: "abcd12"
     //   },
     secondary: {
-      main: "#C1E9D6", // Mint
+      main: "#c1e9d6", // Mint
     },
   },
   shape: {
@@ -20,3 +20,8 @@ export const theme = createTheme({
 });
 
 export default theme;
+
+export const themeColors = {
+  primary: "#186bcc",
+  secondary: "#c1e9d6",
+};

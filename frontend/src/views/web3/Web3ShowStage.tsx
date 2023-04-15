@@ -11,7 +11,7 @@ import { getContractsForChain } from "../../utils/chainUtils";
 import { useAccount, useContractRead, useNetwork } from "wagmi";
 
 // Loads data from chain and responds to chain events
-export const Web3Integration = () => {
+export const Web3ShowStage = () => {
   // Get correct contract addresses for current chain
   const { chain } = useNetwork();
   const contracts = getContractsForChain(chain?.id);
