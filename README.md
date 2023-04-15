@@ -21,4 +21,4 @@ Please reach out on Twitter for more information:
 
 ### Tech Stack
 
-This project was bootstrapped with 　 Hardhat for the smart contracts and React for the frontend.
+This project was bootstrapped with Hardhat for the smart contracts and React for the frontend.
