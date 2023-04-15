@@ -113,7 +113,7 @@ export default class SceneStage extends Phaser.Scene {
   }
 
   create() {
-    this.add.image(637, 360, "bg2").setScale(0.28, 0.28).setOrigin(0.5, 0.5);
+    this.add.image(637, 360, "bg1").setScale(0.28, 0.28).setOrigin(0.5, 0.5);
 
     let group = this.physics.add.group();
 
