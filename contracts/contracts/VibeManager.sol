@@ -33,9 +33,10 @@ contract VibeManager is AccessControl, ReentrancyGuard, IVibeManager {
         string memory _imageUrl,
         uint256 _startDate,
         uint256 _endDate,
-        EventType _eventType
+        string memory _eventType
     ) external returns (uint256 vibeId) {
         vibeId = vibeContract.createVibe(
+            msg.sender,
             _name,
             _shortName,
             _imageUrl,
@@ -43,6 +44,8 @@ contract VibeManager is AccessControl, ReentrancyGuard, IVibeManager {
             _endDate,
             _eventType
         );
+
+        viberContract.addAdminVibe(msg.sender, vibeId);
     }
 
     function updateVibe(
@@ -52,7 +55,7 @@ contract VibeManager is AccessControl, ReentrancyGuard, IVibeManager {
         string memory _imageUrl,
         uint256 _startDate,
         uint256 _endDate,
-        EventType _eventType
+        string memory _eventType
     ) external {
         vibeContract.updateVibe(
             msg.sender,
@@ -66,13 +69,45 @@ contract VibeManager is AccessControl, ReentrancyGuard, IVibeManager {
         );
     }
 
-    function joinVibe(uint256 _vibeId, uint256 _viberId) external {}
+    function joinVibe(uint256 _viberId, uint256 _vibeId) external {
+        // Add statement here to require whitelisted to join event
+        viberContract.joinVibe(_viberId, _vibeId);
+        vibeContract.joinVibe(msg.sender, _viberId, _vibeId);
+    }
 
     function leaveVibe(uint256 _vibeId, uint256 _viberId) external {}
 
     function voteVibe(uint256 _voterId, uint256 _voteeId) external {}
 
-    function getOrMintViber(
+    function mintViber(
+        string calldata _name
+    ) external returns (uint256 viberId) {
+        viberId = viberContract.mint(msg.sender, _name);
+    }
+
+    function getVibeAndVibees(
+        uint256 _vibeId
+    ) external returns (VibeStats memory vibe, VibeeStats[] memory vibees) {
+        (vibe, vibees) = vibeContract.getVibeAndVibees(_vibeId);
+    }
+
+    function getViberAndVibes(
         address _address
-    ) external returns (ViberStats memory) {}
+    )
+        external
+        view
+        returns (
+            ViberStats memory viber,
+            VibeStats[] memory vibes,
+            VibeStats[] memory adminVibes
+        )
+    {
+        viber = viberContract.getViberForAddress(_address);
+        vibes = vibeContract.getVibes(viber.vibes);
+        adminVibes = vibeContract.getVibes(viber.adminVibes);
+    }
+
+    fallback() external payable {}
+
+    receive() external payable {}
 }

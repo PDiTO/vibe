@@ -8,8 +8,7 @@ pragma solidity ^0.8.18;
 
 struct VibeeStats {
     uint256 vibe;
-    uint256 id;
-    address vibee;
+    uint256 viber;
     bool exists;
     uint256 achievements;
     string status;

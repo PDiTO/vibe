@@ -8,4 +8,7 @@ pragma solidity ^0.8.18;
 
 struct ViberStats {
     uint256 id;
+    string name;
+    uint256[] vibes;
+    uint256[] adminVibes;
 }

@@ -6,20 +6,16 @@
 
 pragma solidity ^0.8.18;
 
-// Event types
-enum EventType {
-    INPERSON,
-    REMOTE
-}
-
 // A Vibe (event)
 struct VibeStats {
+    uint256 id;
     string name;
     string shortName;
     string imageUrl;
     uint256 startDate;
     uint256 endDate;
-    EventType eventType;
+    string eventType;
     address[] admins;
     uint256[] participantIds;
+    bool live;
 }

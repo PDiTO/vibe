@@ -8,6 +8,7 @@ pragma solidity ^0.8.18;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+
 import "./IVibe.sol";
 
 contract Vibe is AccessControl, ReentrancyGuard, IVibe {
@@ -15,6 +16,8 @@ contract Vibe is AccessControl, ReentrancyGuard, IVibe {
 
     uint256 private vibeCounter;
     mapping(uint256 => VibeStats) public vibes;
+    mapping(uint256 => mapping(uint256 => VibeeStats)) public vibees;
+    mapping(uint256 => mapping(address => bool)) public whitelist;
 
     constructor() {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -22,18 +25,20 @@ contract Vibe is AccessControl, ReentrancyGuard, IVibe {
     }
 
     function createVibe(
+        address _creator,
         string memory _name,
         string memory _shortName,
         string memory _imageUrl,
         uint256 _startDate,
         uint256 _endDate,
-        EventType _eventType
+        string memory _eventType
     ) external onlyRole(MANAGER_ROLE) returns (uint256) {
         // Increment id
         vibeCounter++;
 
         // Store new vibe
         vibes[vibeCounter] = VibeStats({
+            id: vibeCounter,
             name: _name,
             shortName: _shortName,
             imageUrl: _imageUrl,
@@ -41,15 +46,33 @@ contract Vibe is AccessControl, ReentrancyGuard, IVibe {
             endDate: _endDate,
             eventType: _eventType,
             admins: new address[](0),
-            participantIds: new uint256[](0)
+            participantIds: new uint256[](0),
+            live: true
         });
 
-        vibes[vibeCounter].admins.push(msg.sender);
+        vibes[vibeCounter].admins.push(_creator);
 
         emit VibeCreated(vibeCounter);
 
         return vibeCounter;
     }
+
+    function addToWhitelist(
+        address _sender,
+        uint256 _vibeId,
+        address[] memory _users
+    ) external {
+        require(isAdmin(_vibeId, _sender), "NOTADMIN");
+        uint256 length = _users.length;
+        for (uint256 i = 0; i < length; i++) {
+            whitelist[_vibeId][_users[i]] = true;
+        }
+    }
+
+    function removeFromWhitelist(
+        uint256 _vibeId,
+        address[] memory _users
+    ) external {}
 
     function updateVibe(
         address _sender,
@@ -59,7 +82,7 @@ contract Vibe is AccessControl, ReentrancyGuard, IVibe {
         string memory _imageUrl,
         uint256 _startDate,
         uint256 _endDate,
-        EventType _eventType
+        string memory _eventType
     ) external onlyRole(MANAGER_ROLE) {
         require(isAdmin(_vibeId, _sender), "NOT ADMIN");
 
@@ -84,6 +107,25 @@ contract Vibe is AccessControl, ReentrancyGuard, IVibe {
         vibes[_vibeId].admins.push(_newAdmin);
     }
 
+    /// @notice Joins a vibe
+    function joinVibe(
+        address _user,
+        uint256 _viberId,
+        uint256 _vibeId
+    ) external onlyRole(MANAGER_ROLE) {
+        //Require _user whitelisted
+        VibeStats memory vibe = vibes[_vibeId];
+        // require(vibe.live, "XVIBE");
+        vibes[_vibeId].participantIds.push(_viberId);
+        vibees[_vibeId][_viberId] = VibeeStats({
+            vibe: _vibeId,
+            viber: _viberId,
+            exists: true,
+            achievements: 0,
+            status: ""
+        });
+    }
+
     /// @notice Removes an admin from a vibe
     /// @dev TO DO post hackathon
     function removeAdmin(uint256 _vibeId, address _retiredAdmin) external {}
@@ -101,4 +143,36 @@ contract Vibe is AccessControl, ReentrancyGuard, IVibe {
         }
         return false;
     }
+
+    /// @notice Returns vibes of passed ids
+    function getVibes(
+        uint256[] memory _vibeIds
+    ) external view returns (VibeStats[] memory) {
+        uint256 length = _vibeIds.length;
+        VibeStats[] memory fetchedVibes = new VibeStats[](length);
+
+        for (uint256 i = 0; i < length; i++) {
+            fetchedVibes[i] = vibes[_vibeIds[i]];
+        }
+
+        return fetchedVibes;
+    }
+
+    function getVibeAndVibees(
+        uint256 _vibeId
+    ) external view returns (VibeStats memory, VibeeStats[] memory) {
+        VibeStats memory vibe = vibes[_vibeId];
+        uint256 participantCount = vibe.participantIds.length;
+        VibeeStats[] memory fetchedVibees = new VibeeStats[](participantCount);
+
+        for (uint256 i = 0; i < participantCount; i++) {
+            fetchedVibees[i] = vibees[_vibeId][vibe.participantIds[i]];
+        }
+
+        return (vibe, fetchedVibees);
+    }
+
+    fallback() external payable {}
+
+    receive() external payable {}
 }

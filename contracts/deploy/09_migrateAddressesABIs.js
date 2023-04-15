@@ -4,6 +4,13 @@ var fs = require("fs-extra");
 module.exports = async ({ deployments, getChainId }) => {
   const Vibe = await deployments.get("Vibe");
   const vibe = await ethers.getContractAt("Vibe", Vibe.address);
+  const Viber = await deployments.get("Viber");
+  const viber = await ethers.getContractAt("Viber", Viber.address);
+  const VibeManager = await deployments.get("VibeManager");
+  const vibeManager = await ethers.getContractAt(
+    "VibeManager",
+    VibeManager.address
+  );
 
   // Load existing file
   const data = fs.readFileSync("../frontend/src/config/contracts.json");
@@ -15,6 +22,8 @@ module.exports = async ({ deployments, getChainId }) => {
 
   existingData[currentChainId] = {
     vibe_address: vibe.address,
+    viber_address: viber.address,
+    vibe_manager_address: vibeManager.address,
   };
 
   // Write contract addresses to front end constants based on chainId
@@ -29,7 +38,7 @@ module.exports = async ({ deployments, getChainId }) => {
   );
 
   // Copy compiled ABI to front end abi folder for files that are used
-  const contractArray = ["Vibe"];
+  const contractArray = ["Vibe", "Viber", "VibeManager"];
 
   for (let i = 0; i < contractArray.length; i++) {
     try {
@@ -45,7 +54,6 @@ module.exports = async ({ deployments, getChainId }) => {
       )} as const;\n`;
 
       await fs.writeFile(to, tsConst, "utf8");
-      console.log("Conversion successful!");
     } catch (error) {
       console.error("Error:", error.message);
     }

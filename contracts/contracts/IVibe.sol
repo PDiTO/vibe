@@ -7,6 +7,7 @@
 pragma solidity ^0.8.18;
 
 import "./Models/VibeStats.sol";
+import "./Models/VibeeStats.sol";
 
 interface IVibe {
     /// @notice Events
@@ -20,12 +21,13 @@ interface IVibe {
 
     /// @notice Creates a new vibe
     function createVibe(
+        address _creator,
         string memory _name,
         string memory _shortName,
         string memory _imageUrl,
         uint256 _startDate,
         uint256 _endDate,
-        EventType _eventType
+        string memory _eventType
     ) external returns (uint256);
 
     /// @notice Updates an existing vibe
@@ -37,7 +39,14 @@ interface IVibe {
         string memory _imageUrl,
         uint256 _startDate,
         uint256 _endDate,
-        EventType _eventType
+        string memory _eventType
+    ) external;
+
+    /// @notice Joins a vibe
+    function joinVibe(
+        address _user,
+        uint256 _viberId,
+        uint256 _vibeId
     ) external;
 
     /// @notice Adds an admin to a vibe
@@ -46,4 +55,12 @@ interface IVibe {
         uint256 _vibeId,
         address _newAdmin
     ) external;
+
+    function getVibes(
+        uint256[] memory _vibeIds
+    ) external view returns (VibeStats[] memory);
+
+    function getVibeAndVibees(
+        uint256 _vibeId
+    ) external returns (VibeStats memory, VibeeStats[] memory);
 }
