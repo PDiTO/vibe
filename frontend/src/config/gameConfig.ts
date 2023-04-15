@@ -9,9 +9,9 @@ import SceneStage from "../game/scenes/Stage";
 // The phaser config for the game
 export const gameConfig: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
-  width: 640, //canvas size
-  height: 480,
-  transparent: false, // no background color
+  width: 1274, //canvas size
+  height: 680,
+  transparent: true, // no background color
   pixelArt: true, // scale pixel art correctly
   roundPixels: true, // make sure sprites don't bleed into off pixels
   fps: {

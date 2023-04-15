@@ -1,5 +1,7 @@
 // Sprites
-import testSprite from "../assets/test-sprite.jpeg";
+import avatar from "../assets/sprites/avatar.png";
+import bg1 from "../assets/bg/vibe_bg_hackathon.png";
+import bg2 from "../assets/bg/vibe_bg_infinite_garden.png";
 
 export default class ScenePreloader extends Phaser.Scene {
   constructor() {
@@ -26,7 +28,14 @@ export default class ScenePreloader extends Phaser.Scene {
     });
 
     // Load sprites here
-    this.load.image("testSprite", testSprite);
+    this.load.spritesheet("avatar", avatar, {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
+
+    // Load background
+    this.load.image("bg1", bg1);
+    this.load.image("bg2", bg2);
   }
 
   create() {

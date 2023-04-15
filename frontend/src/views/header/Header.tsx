@@ -1,5 +1,6 @@
 // Styling
-import { AppBar, Box, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Stack, Toolbar, Typography } from "@mui/material";
+import vibeLogo from "../../assets/logos/vibe_logo_red.png";
 
 // Web3
 import { useAccount } from "wagmi";
@@ -21,14 +22,23 @@ export const Header = () => {
       >
         <AppBar position="static" color="transparent" elevation={0}>
           <Toolbar>
+            <Box
+              component="img"
+              sx={{
+                height: 30,
+                width: 80,
+                maxWidth: 80,
+                flexGrow: 1,
+              }}
+              src={vibeLogo}
+            />
             <Typography
               color="primary"
               variant="h6"
               component="div"
               sx={{ flexGrow: 1 }}
-            >
-              Vibe
-            </Typography>
+            ></Typography>
+
             {isConnected ? <WalletConnected /> : <WalletDisconnected />}
           </Toolbar>
         </AppBar>

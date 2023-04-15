@@ -56,6 +56,20 @@ code {
   transform: translate(-50%, -50%);
 }
 
+/* Event details */
+.stage-summary-container {
+  position: absolute;
+  bottom: 6px;
+  left: 150px;
+  z-index: 10;
+}
+
+.stage-sponsors-container {
+  position: absolute;
+  top: 30px;
+  z-index: 10;
+}
+
 /* Animations  */
 
 /* Loading Rotation Animation */

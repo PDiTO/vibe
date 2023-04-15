@@ -11,7 +11,7 @@ export const theme = createTheme({
     //       main: "abcd12"
     //   },
     secondary: {
-      main: "#c1e9d6", // Mint
+      main: "#f50057", // Mint
     },
   },
   shape: {

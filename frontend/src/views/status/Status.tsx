@@ -6,6 +6,9 @@ import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 
 // Views
 import { Web3MyVibes } from "../web3/WebMyVibes";
+import { Route, Routes } from "react-router-dom";
+import { Web3ShowStage } from "../web3/Web3ShowStage";
+import { Web3VibeCreate } from "../web3/WebVibeCreate";
 
 // Handles which view to show based on wallet status
 export const Status = () => {
@@ -42,7 +45,20 @@ export const Status = () => {
 
   // Connected, correct network
   if (isConnected) {
-    return <Web3MyVibes />;
+    return (
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <Web3MyVibes />
+            </>
+          }
+        />
+        <Route path="/vibe/:vibeId" element={<Web3ShowStage />} />
+        <Route path="/create" element={<Web3VibeCreate />} />
+      </Routes>
+    );
   }
 
   // Not connected

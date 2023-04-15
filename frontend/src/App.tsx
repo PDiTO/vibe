@@ -41,18 +41,7 @@ function App() {
       <WagmiConfig client={client}>
         <BrowserRouter>
           <Header />
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <>
-                  <Status />
-                </>
-              }
-            />
-            <Route path="/vibe/:vibeId" element={<div>Show vibe</div>} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+          <Status />
         </BrowserRouter>
       </WagmiConfig>
     </ThemeProvider>
